@@ -40,18 +40,27 @@ jobs:
       uses: actions/upload-artifact@v6.0.0
       with:
        name: test-reports
-       path: target/
+       path: target/extent-report/
 
     - name: Upload screenshots
       if: failure()
       uses: actions/upload-artifact@v4
       with:
        name: screenshots
-       path: screenshots/   
+       path: screenshots/ 
 
+    - name: Copy report to GP folder
+      if: always()
+
+      run: |
+        mkdir -p public/extent-reports
+        cp -R target/extent-report/report.html public/extent-reports/
+        cp -R target/extent-report/screenshots/ public/extent-reports/screenshots/
+        ls -l
+      
     - name: Deploy
       if: always()
-      uses: JamesIves/github-pages-deploy-action@4v
+      uses: actions/deploy-pages@v4.0.5
       with:
        folder: public/extent-reports/
        token: ${{ secrets.secret }}
