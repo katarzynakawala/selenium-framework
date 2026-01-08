@@ -1,5 +1,10 @@
 name: Test Automation Workflow
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
 on:
   schedule:
   - cron: 30 23 * * *
