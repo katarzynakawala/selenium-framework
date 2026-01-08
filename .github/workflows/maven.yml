@@ -64,8 +64,7 @@ jobs:
         ls -l
       
     - name: Deploy
-      if: always()
-      uses: actions/deploy-pages@v4.0.5
+      uses: actions/deploy-pages@v4
       with:
        folder: public/extent-reports/
        token: ${{ secrets.PAT1 }}
