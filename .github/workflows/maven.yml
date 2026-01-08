@@ -63,7 +63,7 @@ jobs:
       uses: actions/deploy-pages@v4.0.5
       with:
        folder: public/extent-reports/
-       token: ${{ secrets.secret }}
+       token: ${{ secrets.PAT1 }}
        clean: true
 
     - name: Test Execution Status
