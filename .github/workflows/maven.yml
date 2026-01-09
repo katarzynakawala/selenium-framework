@@ -34,7 +34,6 @@ jobs:
       - name: Run UI tests
         run: mvn test -Dbrowser=chrome -DisLambdaTest=false -DisHeadless=true
 
-      # ---------- ARTIFACTS ----------
       - name: Upload test logs
         if: always()
         uses: actions/upload-artifact@v4
@@ -56,14 +55,13 @@ jobs:
           name: screenshots
           path: screenshots/
 
-      # ---------- GITHUB PAGES ----------
       - name: Prepare Pages content
         if: always()
         run: |
-          mkdir -p public/extent-reports/screenshots
-          cp -R target/extent-report/*.html public/extent-reports/ || true
-          cp -R target/extent-report/screenshots/* public/extent-reports/screenshots/ || true
-          ls -R public
+         mkdir -p public/extent-reports/screenshots
+         cp target/extent-report/report.html public/extent-reports/index.html || true
+         cp -R target/extent-report/screenshots/* public/extent-reports/screenshots/ || true
+         ls -R public
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
