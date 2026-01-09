@@ -12,8 +12,22 @@ public class ExtentReporterUtility {
     private static final ThreadLocal<ExtentTest> extentTest = new ThreadLocal<ExtentTest>();
 
     public static void setupSparkReporter(String reportName) {
-        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter(
-                System.getProperty("user.dir") + File.separator + reportName);
+//        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter(
+//                System.getProperty("user.dir") + File.separator + reportName);
+//        extentReports.attachReporter(extentSparkReporter);
+
+        String reportDirPath = System.getProperty("user.dir")
+                + File.separator + "target"
+                + File.separator + "extent-report";
+
+        File reportDir = new File(reportDirPath);
+        if (!reportDir.exists()) {
+            reportDir.mkdirs();
+        }
+
+        String reportPath = reportDirPath + File.separator + reportName;
+        ExtentSparkReporter extentSparkReporter = new ExtentSparkReporter(reportPath);
+
         extentReports.attachReporter(extentSparkReporter);
     }
 

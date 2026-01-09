@@ -115,9 +115,8 @@ public class BrowserUtility {
             dir.mkdirs();
         }
 
-
         String timeStamp = new SimpleDateFormat("HH-mm-ss").format(new Date());
-        String path = new File(dir, name + "-" + timeStamp + ".png").getAbsolutePath();
+        String path = new File(dir, name + "-" + timeStamp + ".png").getPath();
 
         try {
             FileUtils.copyFile(src, new File(path));
