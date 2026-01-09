@@ -32,4 +32,11 @@ public class LoginTest extends TestBase {
                 .doLoginWith(user.getEmailAddress(), user.getPassword())
                 .getUserName(), "Test Test");
     }
+
+    @Test(description = "Login with invalid user", dataProviderClass = com.ui.dataproviders.LoginDataProvider.class, dataProvider = "LoginExcelDataProvider", retryAnalyzer = com.ui.listeners.RetryAnalyzer.class)
+    public void invalidLogin(User user){
+        assertEquals(homePage.goToLoginPage().
+                LoginWithInvalidCredentials("kacper@gmail.com", "123").getErrorMessage(),"There is 1 error\n" +
+                "Invalid password.");
+    }
 }
