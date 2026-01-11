@@ -15,7 +15,9 @@ import org.openqa.selenium.safari.SafariDriver;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import static java.lang.System.getProperty;
 
@@ -102,10 +104,39 @@ public class BrowserUtility {
         element.sendKeys(textToEnter);
     }
 
+    public void enterSpecialKey(By locator, Keys keyToEnter) {
+        WebElement element = driver.get().findElement(locator);
+        element.sendKeys(keyToEnter);
+    }
+
+    public String getVisibleText(WebElement element) {
+        logger.info("Return visible text" + element.getText());
+
+        return element.getText();
+    }
+
+
     public String getVisibleText(By locator) {
+        logger.info("Finding Element with the locator" + locator);
         WebElement element = driver.get().findElement(locator);
         return element.getText();
     }
+
+    public List<String> getAllVisibleText(By locator) {
+        logger.info("Finding all elements with locator" + locator);
+
+        List<WebElement> elementList = driver.get().findElements(locator);
+        logger.info("Elements found and printing the list of elements");
+
+        List<String> visibleTextList = new ArrayList<String>();
+
+        for (WebElement element : elementList) {
+            visibleTextList.add(getVisibleText(element));
+        }
+
+        return visibleTextList;
+    }
+
 
     public String takeScreenShot(String name) {
         File src = ((TakesScreenshot) driver.get()).getScreenshotAs(OutputType.FILE);
