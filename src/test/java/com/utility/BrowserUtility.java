@@ -11,10 +11,14 @@ import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.Select;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,7 +37,7 @@ public class BrowserUtility {
     }
 
     public BrowserUtility(WebDriver driver) {
-        this.driver.set(driver);
+        BrowserUtility.driver.set(driver);
     }
 
 //    public BrowserUtility(Browser browserName) {
@@ -47,6 +51,13 @@ public class BrowserUtility {
 //            driver.set(new FirefoxDriver());
 //        }
 //    }
+
+    protected WebDriverWait getWait() {
+        if (driver.get() == null) {
+            throw new IllegalStateException("WebDriver is not initialized");
+        }
+        return new WebDriverWait(driver.get(), Duration.ofSeconds(10));
+    }
 
     public BrowserUtility(Browser browserName, boolean isHeadless) {
         logger.info("Launching Browser for " + browserName);
@@ -95,17 +106,35 @@ public class BrowserUtility {
     }
 
     public void clickOn(By locator) {
-        WebElement element = driver.get().findElement(locator);
+        WebElement element = getWait().until(ExpectedConditions.elementToBeClickable(locator));
         element.click();
     }
 
     public void enterText(By locator, String textToEnter) {
-        WebElement element = driver.get().findElement(locator);
+        WebElement element = getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
         element.sendKeys(textToEnter);
     }
 
+    public void clearText(By textBoxLocator) {
+        WebElement element = getWait().until(ExpectedConditions.visibilityOfElementLocated(textBoxLocator));
+        logger.info("Element found and clearing the text box field");
+        element.clear();
+    }
+
+
+    public void selectFromDropdown(By dropdownLocator, String optionToSelect) {
+        logger.info("Finding element with the locator" + dropdownLocator);
+
+        WebElement element =
+                getWait().until(ExpectedConditions.visibilityOfElementLocated(dropdownLocator));
+        Select select = new Select(element);
+        logger.info("Selecting the option" + optionToSelect);
+        select.selectByVisibleText(optionToSelect);
+
+    }
+
     public void enterSpecialKey(By locator, Keys keyToEnter) {
-        WebElement element = driver.get().findElement(locator);
+        WebElement element = getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
         element.sendKeys(keyToEnter);
     }
 
@@ -118,14 +147,17 @@ public class BrowserUtility {
 
     public String getVisibleText(By locator) {
         logger.info("Finding Element with the locator" + locator);
-        WebElement element = driver.get().findElement(locator);
+        WebElement element =
+                getWait().until(ExpectedConditions.visibilityOfElementLocated(locator));
         return element.getText();
     }
 
     public List<String> getAllVisibleText(By locator) {
         logger.info("Finding all elements with locator" + locator);
 
-        List<WebElement> elementList = driver.get().findElements(locator);
+        List<WebElement> elementList =
+                getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+
         logger.info("Elements found and printing the list of elements");
 
         List<String> visibleTextList = new ArrayList<String>();
@@ -137,6 +169,16 @@ public class BrowserUtility {
         return visibleTextList;
     }
 
+    public List<WebElement> getAllElements(By locator) {
+        logger.info("Finding all elements with locator" + locator);
+
+        List<WebElement> elementList =
+                getWait().until(ExpectedConditions.visibilityOfAllElementsLocatedBy(locator));
+
+        logger.info("Elements found and printing the list of elements");
+
+        return elementList;
+    }
 
     public String takeScreenShot(String name) {
         File src = ((TakesScreenshot) driver.get()).getScreenshotAs(OutputType.FILE);

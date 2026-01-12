@@ -15,17 +15,11 @@ public class SearchResultPage extends BrowserUtility {
     private static final By PRODUCT_LISTING_TITLE = By.xpath("//span[@class=\"lighter\"]");
     private static final By ALL_PRODUCT_LIST_NAME = By.xpath("//h5[@itemprop=\"name\"]/a");
 
-
-    WebDriverWait wait = new WebDriverWait(getDriver(), Duration.ofSeconds(10));
-    //TODO replace with explicit wait
-
     public SearchResultPage(WebDriver driver) {
         super(driver);
     }
 
     public String getSearchResultTitle() {
-        wait.until(ExpectedConditions.visibilityOfElementLocated(PRODUCT_LISTING_TITLE));
-
         return getVisibleText(PRODUCT_LISTING_TITLE);
     }
 

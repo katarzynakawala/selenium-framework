@@ -9,6 +9,7 @@ public class MyAccountPage extends BrowserUtility {
 
     private static final By USER_NAME_LOCATOR = By.cssSelector("a.account span");
     private static final By SEARCH_TEXT_BOX = By.id("search_query_top");
+    //private static final By ADD_NEW_ADDRESS_LINK = By.xpath("//a[@title=\"Add my first address\"]");
 
     public MyAccountPage(WebDriver driver) {
         super(driver);
