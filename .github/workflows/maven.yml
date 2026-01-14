@@ -6,12 +6,8 @@ permissions:
   id-token: write
 
 on:
-  push:
-    branches: ["main"]
   pull_request:
     branches: ["main"]
-  schedule:
-    - cron: "30 23 * * *"
 
 jobs:
   build:
